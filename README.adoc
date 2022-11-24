@@ -70,3 +70,12 @@ secret/dg-cluster-credentials
 route.route.openshift.io/dg-cluster
 ----
 
+
+== Results
+
+.Dashboard logging in as user `rhdg-admin`
+image::rhdg-admin-dashboard.png[]
+
+.Dashboard logging in as user `products`
+image::products-dashboard.png[]
+
