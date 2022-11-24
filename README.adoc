@@ -1,0 +1,32 @@
+= Red Hat Data Grid 8 Authorization Playground
+Álvaro López Medina <alopezme@redhat.com>
+v1.0, 2022-11
+// Metadata
+:description: This document shows how to perform basic installations of Red Hat Data Grid customizing its configuration.
+:keywords: infinispan, datagrid, openshift, red hat
+// Create TOC wherever needed
+:toc: macro
+:sectanchors:
+:sectnumlevels: 2
+:sectnums: 
+:source-highlighter: pygments
+:imagesdir: images
+// Start: Enable admonition icons
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+ifndef::env-github[]
+:icons: font
+endif::[]
+
+// Create the Table of contents here
+toc::[]
+
+== Introduction
+
+== How to try
+
