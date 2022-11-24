@@ -1,0 +1,247 @@
+---
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg.examples.discounts-01
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: "dg-cluster"
+  name: "rhdg.examples.discounts-01"
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      security:
+        authorization:
+          enabled: true
+          roles:
+          - discounts-write
+          - discounts-read
+          - products-read
+      statistics: "true"
+---
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg.examples.discounts-02
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: "dg-cluster"
+  name: "rhdg.examples.discounts-02"
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      security:
+        authorization:
+          enabled: true
+          roles:
+          - discounts-write
+          - discounts-read
+      statistics: "true"
+---
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg.examples.products-01
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: "dg-cluster"
+  name: "rhdg.examples.products-01"
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      security:
+        authorization:
+          enabled: true
+          roles:
+          - products-write
+          - products-read
+          - discounts-read
+      statistics: "true"
+---
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg.examples.products-02
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: "dg-cluster"
+  name: "rhdg.examples.products-02"
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      security:
+        authorization:
+          enabled: true
+          roles:
+          - products-write
+          - products-read
+      statistics: "true"
+---
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg.examples.nonsecured-01
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: "dg-cluster"
+  name: "rhdg.examples.nonsecured-01"
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      statistics: "true"
+---
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg.examples.nonsecured-02
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: "dg-cluster"
+  name: "rhdg.examples.nonsecured-02"
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      statistics: "true"
+---
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: dg-cluster
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app: infinispan-pod
+                clusterName: dg-cluster
+                infinispan_cr: dg-cluster
+            topologyKey: "kubernetes.io/hostname"
+  configListener:
+    enabled: true
+  container:
+    cpu: "2:1"
+    extraJvmOpts: "-XX:+UseG1GC -XX:MaxGCPauseMillis=400 "
+    memory: "2Gi:1Gi"
+  expose:
+    type: Route
+  replicas: 1
+  security:
+    endpointAuthentication: true
+    endpointSecretName: dg-cluster-credentials
+    authorization:
+      enabled: true
+      roles:
+        - name: products-write
+          permissions:
+          - ALL_WRITE
+        - name: products-read
+          permissions:
+          - ALL_READ
+        - name: discounts-write
+          permissions:
+          - ALL_WRITE
+        - name: discounts-read
+          permissions:
+          - ALL_READ
+    endpointEncryption:
+      type: None
+  service:
+    container:
+      ephemeralStorage: true
+    type: DataGrid
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: dg-cluster
+spec:
+  to:
+    kind: Service
+    name: dg-cluster
+    weight: 100
+  port:
+    targetPort: infinispan
+  wildcardPolicy: None

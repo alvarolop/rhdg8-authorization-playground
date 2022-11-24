@@ -1,0 +1,33 @@
+credentials:
+  - username: products
+    password: changeme
+    roles:
+      - products-write
+      - products-read
+      - monitor
+  - username: discounts
+    password: changeme
+    roles:
+      - discounts-write
+      - discounts-read
+      - monitor
+  - username: products-disc-ro
+    password: changeme
+    roles:
+      - products-write
+      - products-read
+      - discounts-read
+      - monitor
+  - username: discounts-ro
+    password: changeme
+    roles:
+      - discounts-read
+      - monitor
+  - username: rhdg-admin
+    password: changeme
+    roles:
+      - admin
+  - username: rhdg-observer
+    password: changeme
+    roles:
+      - observer

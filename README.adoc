@@ -26,7 +26,47 @@ endif::[]
 // Create the Table of contents here
 toc::[]
 
-== Introduction
+== Roles and permissions
 
-== How to try
+This repository tries to understand how to set the correct roles and permissions to cache and CacheManager to achieve soft-multitenancy.
+
+In this case, we have two teams: `Products` and `Discounts`. Each of them has one microservice and two caches. 
+
+Cache access should be as follows:
+
+* discounts-01: `Discounts` has read-write permission and `Products` has read.
+* discounts-02: `Discounts` has read-write permission and `Products` has none.
+* products-01: `Products` has read-write permission and `Discounts` has read.
+* products-02: `Products` has read-write permission and `Discounts` has none.
+
+== How to deploy on OCP?
+
+Install the operator and then execute the following commands:
+
+1. Create a secret based on the `identities.yaml` file:
++
+[source, bash]
+----
+oc create secret generic --from-file=identities.yaml dg-cluster-credentials
+----
++
+2. Create the rest of the resources:
++
+[source, bash]
+----
+oc apply -f cluster.yaml
+----
+
+This will create the following objects:
+
+[source, console]
+----
+cache.infinispan.org/dg-cluster-rhdg.examples.discounts-01
+cache.infinispan.org/dg-cluster-rhdg.examples.discounts-02
+cache.infinispan.org/dg-cluster-rhdg.examples.products-01
+cache.infinispan.org/dg-cluster-rhdg.examples.products-02
+infinispan.infinispan.org/dg-cluster
+secret/dg-cluster-credentials
+route.route.openshift.io/dg-cluster
+----
 
