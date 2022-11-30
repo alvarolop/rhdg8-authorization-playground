@@ -1,0 +1,31 @@
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg-examples-discounts-02
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: dg-cluster
+  name: rhdg-examples-discounts-02
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      security:
+        authorization:
+          enabled: true
+          roles:
+          - discounts-write
+          - discounts-read
+      statistics: "true"

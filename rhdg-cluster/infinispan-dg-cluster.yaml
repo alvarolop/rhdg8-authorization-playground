@@ -1,0 +1,51 @@
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: dg-cluster
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app: infinispan-pod
+                clusterName: dg-cluster
+                infinispan_cr: dg-cluster
+            topologyKey: "kubernetes.io/hostname"
+  configListener:
+    enabled: true
+  container:
+    cpu: "2:1"
+    extraJvmOpts: "-XX:+UseG1GC -XX:MaxGCPauseMillis=400 "
+    memory: "2Gi:1Gi"
+  expose:
+    type: Route
+  replicas: 1
+  security:
+    endpointAuthentication: true
+    endpointSecretName: dg-cluster-credentials
+    authorization:
+      enabled: true
+      roles:
+        - name: products-write
+          permissions:
+          - ALL_WRITE
+        - name: products-read
+          permissions:
+          - ALL_READ
+        - name: discounts-write
+          permissions:
+          - ALL_WRITE
+        - name: discounts-read
+          permissions:
+          - ALL_READ
+    endpointEncryption:
+      type: None
+  service:
+    container:
+      ephemeralStorage: true
+    type: DataGrid

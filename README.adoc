@@ -54,7 +54,7 @@ oc create secret generic --from-file=identities.yaml dg-cluster-credentials
 +
 [source, bash]
 ----
-oc apply -f cluster.yaml
+oc apply -f rhdg-cluster
 ----
 
 This will create the following objects:
@@ -79,3 +79,35 @@ image::rhdg-admin-dashboard.png[]
 .Dashboard logging in as user `products`
 image::products-dashboard.png[]
 
+
+
+== Testing
+
+
+// CREDENTIALS=sl-admin:changeme
+// DG_URL=https://datagrid-dev-external-datagrid-dev.apps.nopro.ocp.santalucia.net
+// DG_CACHE=sl.examples.cache-40
+
+// curl -X POST -k -u developer:developer -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
+// -H "Key-Content-Type: application/x-protostream"
+
+
+
+
+// Opciḉn 1
+// curl -X POST -k -v -u "$CREDENTIALS" -H "Content-Type: application/x-protostream" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello --data "Hello World"
+// curl -X GET  -k -v -u "$CREDENTIALS" -H "Content-Type: application/x-protostream" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello
+// curl -X GET  -k -v -u "$CREDENTIALS" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello
+
+// curl -X GET  -k -v -u "$CREDENTIALS"  ${DG_URL}/rest/v2/caches/${DG_CACHE}?action=keys
+
+
+// Opción 2
+// curl -X POST -k -v -u "$CREDENTIALS" -H "Content-Type: text/plain" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello --data "Hello World"
+// curl -X GET  -k -v -u "$CREDENTIALS" -H "Content-Type: string" ${DG_URL}/rest/v2/caches/${DG_CACHE}/a
+// curl -X GET  -k -v -u "$CREDENTIALS" ${DG_URL}/rest/v2/caches/${DG_CACHE}?action=keys
+
+
+// CREDENTIALS=sl-admin:changeme
+// DG_URL=https://datagrid-dev-external-datagrid-dev.apps.nopro.ocp.santalucia.net
+// DG_CACHE=sl.examples.rest-01

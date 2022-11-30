@@ -1,0 +1,25 @@
+kind: Cache
+apiVersion: infinispan.org/v2alpha1
+metadata:
+  name: dg-cluster-rhdg-examples-unsecured-01
+  labels:
+    app: dg-cluster-datagrid
+spec:
+  clusterName: dg-cluster
+  name: rhdg-examples-unsecured-01
+  template: |
+    distributedCache:
+      encoding:
+        key:
+          mediaType: application/x-protostream
+        value:
+          mediaType: application/x-protostream
+      expiration:
+        lifespan: "4000"
+        maxIdle: "-1"
+      memory:
+        maxSize: 500MB
+        whenFull: REMOVE
+      mode: SYNC
+      owners: "1"
+      statistics: "true"
