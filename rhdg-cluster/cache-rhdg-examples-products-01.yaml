@@ -15,7 +15,7 @@ spec:
         value:
           mediaType: application/x-protostream
       expiration:
-        lifespan: "4000"
+        lifespan: "3600000"
         maxIdle: "-1"
       memory:
         maxSize: 500MB
@@ -29,4 +29,5 @@ spec:
           - products-write
           - products-read
           - discounts-read
+          - monitor
       statistics: "true"
