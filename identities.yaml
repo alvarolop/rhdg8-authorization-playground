@@ -11,23 +11,16 @@ credentials:
       - discounts-write
       - discounts-read
       - monitor
-  - username: products-disc-ro
-    password: changeme
-    roles:
-      - products-write
-      - products-read
-      - discounts-read
-      - monitor
-  - username: discounts-ro
-    password: changeme
-    roles:
-      - discounts-read
-      - monitor
   - username: rhdg-admin
     password: changeme
     roles:
       - admin
+      - monitor
   - username: rhdg-observer
     password: changeme
     roles:
       - observer
+  - username: rhdg-monitor
+    password: changeme
+    roles:
+      - monitor

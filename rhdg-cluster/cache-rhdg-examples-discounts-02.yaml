@@ -26,6 +26,8 @@ spec:
         authorization:
           enabled: true
           roles:
+          - admin
+          - observer
           - discounts-write
           - discounts-read
       statistics: "true"

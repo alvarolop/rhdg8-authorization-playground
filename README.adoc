@@ -61,13 +61,13 @@ This will create the following objects:
 
 [source, console]
 ----
-cache.infinispan.org/dg-cluster-rhdg.examples.discounts-01
-cache.infinispan.org/dg-cluster-rhdg.examples.discounts-02
-cache.infinispan.org/dg-cluster-rhdg.examples.products-01
-cache.infinispan.org/dg-cluster-rhdg.examples.products-02
-infinispan.infinispan.org/dg-cluster
-secret/dg-cluster-credentials
-route.route.openshift.io/dg-cluster
+cache.infinispan.org/dg-cluster-rhdg-examples-discounts-01 created
+cache.infinispan.org/dg-cluster-rhdg-examples-discounts-02 created
+cache.infinispan.org/dg-cluster-rhdg-examples-products-01 created
+cache.infinispan.org/dg-cluster-rhdg-examples-products-02 created
+cache.infinispan.org/dg-cluster-rhdg-examples-unsecured-01 created
+cache.infinispan.org/dg-cluster-rhdg-examples-unsecured-02 created
+infinispan.infinispan.org/dg-cluster created
 ----
 
 
