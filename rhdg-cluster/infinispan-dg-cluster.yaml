@@ -34,22 +34,18 @@ spec:
         - name: products-write
           permissions:
           - ALL_WRITE
-          - LISTEN
           - MONITOR
         - name: products-read
           permissions:
           - ALL_READ
-          - LISTEN
           - MONITOR
         - name: discounts-write
           permissions:
           - ALL_WRITE
-          - LISTEN
           - MONITOR
         - name: discounts-read
           permissions:
           - ALL_READ
-          - LISTEN
           - MONITOR
     endpointEncryption:
       type: None
