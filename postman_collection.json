@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "49c7ec64-2ed1-4ca8-b6bc-ff3176d99555",
+		"name": "infinispan-auth-rest-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2217231"
+	},
+	"item": [
+		{
+			"name": "Retrieve Cache Configuration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}?action=config",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "config"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve all Cache Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}?action=stats",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "stats"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Cache Entry",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Key-Content-Type",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text"
+					},
+					{
+						"key": "timeToLiveSeconds",
+						"value": "-1",
+						"type": "text"
+					},
+					{
+						"key": "maxIdleTimeSeconds",
+						"value": "-1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"_type\": \"string\",\n    \"_value\": \"world\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}/:cacheKey",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}",
+						":cacheKey"
+					],
+					"variable": [
+						{
+							"key": "cacheKey",
+							"value": "test{{count}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Cache Entry",
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Key-Content-Type",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}/:cacheKey",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}",
+						":cacheKey"
+					],
+					"variable": [
+						{
+							"key": "cacheKey",
+							"value": "test{{count}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check if Entry Exists",
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "HEAD",
+				"header": [
+					{
+						"key": "Key-Content-Type",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}/:cacheKey",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}",
+						":cacheKey"
+					],
+					"variable": [
+						{
+							"key": "cacheKey",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Cache Keys",
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Key-Content-Type",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-java-object;type=java.lang.String",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}?action=keys",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "keys"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Cache Entries",
+			"request": {
+				"auth": {
+					"type": "digest",
+					"digest": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "MD5",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/rest/v2/caches/{{cacheName}}?action=clear",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rest",
+						"v2",
+						"caches",
+						"{{cacheName}}"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "clear"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log(\"Iteration \" + pm.info.iteration);",
+					"var value = environment.count;",
+					"value++;",
+					"postman.setEnvironmentVariable(\"count\", pm.info.iteration);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cacheName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "count",
+			"value": "1"
+		}
+	]
+}
