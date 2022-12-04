@@ -28,7 +28,7 @@ toc::[]
 
 == Roles and permissions
 
-This repository tries to understand how to set the correct roles and permissions to cache and CacheManager to achieve soft-multitenancy.
+This repository tries to sum up how to set the correct roles and permissions to cache and CacheManager to achieve soft-multitenancy.
 
 In this case, we have two teams: `Products` and `Discounts`. Each of them has one microservice and two caches. 
 
@@ -70,44 +70,87 @@ cache.infinispan.org/dg-cluster-rhdg-examples-unsecured-02 created
 infinispan.infinispan.org/dg-cluster created
 ----
 
+== Users structure
 
-== Results
+.Predefined users
+[cols="1,1,2",options="header"]
+|====
+| Username | Password | Roles
+| products
+| changeme
+| products-write, products-read, monitor
+
+| discounts
+| changeme
+| discounts-write, discounts-read, monitor
+
+| rhdg-admin
+| changeme
+| admin, monitor
+
+| rhdg-observer
+| changeme
+| observer
+
+| rhdg-monitor
+| changeme
+| monitor
+|====
+
+
+== Testing: Web console
+
+If you want to quickly visualize how permissions are set for each user you can use the web console. Log in with different users and you will see that only the `rhdg-admin` can delete the caches and that each application user (discounts and products) can only visualize their own cache.
+
+[NOTE]
+====
+You can access the web console using the output of the following command:
+
+[source, bash]
+----
+oc get routes dg-cluster-external --template='http://{{ .spec.host }}'
+----
+====
 
 .Dashboard logging in as user `rhdg-admin`
-image::rhdg-admin-dashboard.png[]
+image::rhdg-admin-dashboard.png["Dashboard logging in as user `rhdg-admin`"]
 
 .Dashboard logging in as user `products`
-image::products-dashboard.png[]
+image::products-dashboard.png["Dashboard logging in as user `products`"]
 
 
+== Testing: REST API
 
-== Testing
+If you want to automate your tests, you can use the Postman collection in this git repository `postman_collection.json`. First, import the collection to your Postman installation and configure the following variables at the collection or environment level. You will reuse them in all the REST invocations. Take into account that you can modify the cache name and username if you want to test all the combinations.
 
+.Postman: Collection variables
+image::postman-variables.png["Postman collection variables"]
 
-// CREDENTIALS=sl-admin:changeme
-// DG_URL=https://datagrid-dev-external-datagrid-dev.apps.nopro.ocp.santalucia.net
-// DG_CACHE=sl.examples.cache-40
+Now, you are ready to execute rest calls to any of the caches.
 
-// curl -X POST -k -u developer:developer -H "Content-Type: text/plain" ${RHDG_URL}/rest/v2/caches/${CACHE_NAME}/0 --data "Hello World"
-// -H "Key-Content-Type: application/x-protostream"
-
-
-
-
-// Opciḉn 1
-// curl -X POST -k -v -u "$CREDENTIALS" -H "Content-Type: application/x-protostream" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello --data "Hello World"
-// curl -X GET  -k -v -u "$CREDENTIALS" -H "Content-Type: application/x-protostream" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello
-// curl -X GET  -k -v -u "$CREDENTIALS" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello
-
-// curl -X GET  -k -v -u "$CREDENTIALS"  ${DG_URL}/rest/v2/caches/${DG_CACHE}?action=keys
+.Postman: Retrieve cache configuration
+image::postman-cache-config.png["Postman: Retrieve cache configuration"]
 
 
-// Opción 2
-// curl -X POST -k -v -u "$CREDENTIALS" -H "Content-Type: text/plain" ${DG_URL}/rest/v2/caches/${DG_CACHE}/hello --data "Hello World"
-// curl -X GET  -k -v -u "$CREDENTIALS" -H "Content-Type: string" ${DG_URL}/rest/v2/caches/${DG_CACHE}/a
-// curl -X GET  -k -v -u "$CREDENTIALS" ${DG_URL}/rest/v2/caches/${DG_CACHE}?action=keys
+1. User `discounts` can access the `rhdg-examples-discounts-01` cache and perform all the available operations:
++
+.discounts accessing `rhdg-examples-discounts-01`
+image::postman-cache-test01.png["Postman: discounts accessing `rhdg-examples-discounts-01`"]
++
+2. User `products` can access the `rhdg-examples-discounts-01` cache and only perform read and getStats operations:
++
+.products accessing `rhdg-examples-discounts-01`
+image::postman-cache-test02.png["Postman: products accessing `rhdg-examples-discounts-01`"]
++
+3. User `products` cannot access the `rhdg-examples-discounts-02` and cannot perform any operation
++
+.products accessing `rhdg-examples-discounts-02`
+image::postman-cache-test03.png["Postman: products accessing `rhdg-examples-discounts-02`"]
 
 
-// CREDENTIALS=sl-admin:changeme
-// DG_URL=https://datagrid-dev-external-datagrid-dev.apps.nopro.ocp.santalucia.net
-// DG_CACHE=sl.examples.rest-01
+== Relevant links
+
+* Documentation: https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.3/html-single/data_grid_rest_api/index[Data Grid REST API].
+* Documentation: https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.4/html-single/data_grid_security_guide/index#configuring-cache-authorization_security-authorization[Configuring caches with security authorization].
+* Documentation: https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.3/html-single/data_grid_security_guide/index#customizing-authorization_security-authorization[Customizing roles and permissions].
+* Documentation: https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.4/html/data_grid_operator_guide/configuring-authentication[Operator: Configuring authentication].
